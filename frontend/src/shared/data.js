@@ -6,7 +6,7 @@ const data = {
         image: '/images/p6.jpg', 
         price: 120, 
         brand: "Nike", 
-        rating: 4.5, 
+        rating: 3.5, 
         numReviews: 10, 
         description: "high quality product"
 
@@ -17,7 +17,7 @@ const data = {
         image: '/images/p2.jpg', 
         price: 100, 
         brand: "Adidas", 
-        rating: 4.5, 
+        rating: 2.5, 
         numReviews: 10, 
         description: "high adisas quality product"
 
@@ -39,7 +39,7 @@ const data = {
         image: '/images/p4.jpg', 
         price: 120, 
         brand: "Zara", 
-        rating: 3.5, 
+        rating: 4.0, 
         numReviews: 8, 
         description: "high zra quality product"
 
@@ -51,7 +51,7 @@ const data = {
         price: 100, 
         brand: "Uniqlo", 
         rating: 4, 
-        numReviews: 5, 
+        numReviews: 5.0, 
         description: "high uniqlo quality product"
 
        },
@@ -61,7 +61,7 @@ const data = {
         image: '/images/p6.jpg', 
         price: 250, 
         brand: "Vogue", 
-        rating: 3, 
+        rating: 5.5, 
         numReviews: 9, 
         description: "high vogue quality product"
 
