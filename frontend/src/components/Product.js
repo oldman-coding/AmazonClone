@@ -2,21 +2,22 @@ import React from 'react';
 import Rating from './Rating';
 
 const Product = (props) => {
+    const { product } = props;
     return (
-        <div key={props.key} className='card'>
-            <a href={`/product/${props.product._id}`}>
-                <img className='medium' src={props.product.image} alt={props.product.name} />
+        <div key={product._id} className='card'>
+            <a href={`/product/${product._id}`}>
+                <img className='medium' src={product.image} alt={product.name} />
             </a>
             <div className='card-body'>
-                <a href={`/product/${props.product._id}`}>
-                    <h2>{props.product.name}</h2>
+                <a href={`/product/${product._id}`}>
+                    <h2>{product.name}</h2>
                 </a>
                 
                 <div className='price'>
-                    ${props.product.price}
+                    ${product.price}
                 </div>
             </div>
-            <Rating rating={props.product.rating} numReviews ={props.product.numReviews} />
+            <Rating rating={product.rating} numReviews ={product.numReviews} />
          
         </div>
     )
