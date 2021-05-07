@@ -1,40 +1,57 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {useDispatch, useSelector} from 'react-redux';
-import { signin } from '../actions/userAction';
+import { register } from '../actions/userAction';
 import LoadingBox from '../components/LoadingBox';
 import MessageBox from '../components/MessageBox';
 
-export default function SigninScreen(props) {
-    const [email,setEmail] = useState(''); 
+export default function RegisterScreen(props) {
+    const [email, setEmail] = useState(''); 
+    const [name, setName] = useState(''); 
     const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
 
     const redirect = props.location.search
                         ? props.location.search.split('=')[1]
                         : '/'
 
-    const userSignin = useSelector(state => state.userSignin);
-    const {userInfo, loading, error} = userSignin;
+    const userRegister = useSelector(state => state.userRegister);
+    const {userInfo, loading, error} = userRegister;
 
     const dispatch = useDispatch();
     const submitHandler = (e) => {
         e.preventDefault();
-        dispatch(signin(email, password));
-    };
-    useEffect(() => {
-        if (userInfo) {
-            props.history.push(redirect)
+        if (password !== confirmPassword) {
+            alert('Password not match')
         }
-    }, [props.history, redirect, userInfo]);
+        else {
+            dispatch(register(name, email, password));
+        }
+        
+    };
+    // useEffect(() => {
+    //     if (userInfo) {
+    //         props.history.push(redirect)
+    //     }
+    // }, [props.history, redirect, userInfo]);
 
     return (
         <div>
             <form className='form' onSubmit={submitHandler}>
                 <div>
-                    <h1>Sign in</h1>
+                    <h1>Register</h1>
                 </div>
                 {loading && <LoadingBox />}
                 {error && <MessageBox variant='danger'>{error}</MessageBox>}
+                <div>
+                    <label htmlFor='Name'>Name</label>
+                    <input 
+                        type='text' 
+                        id='name' 
+                        placeholder='Enter Name'
+                        required 
+                        onChange={e => setName(e.target.value)}></input>
+                </div>
                 <div>
                     <label htmlFor='email'>Email address</label>
                     <input 
@@ -54,12 +71,23 @@ export default function SigninScreen(props) {
                         onChange={e => setPassword(e.target.value)}></input>
                 </div>
                 <div>
-                    <button className='primary' type='submit'>Sign in</button>
+                    <label htmlFor='confirmPassword'>Confirm Password</label>
+                    <input 
+                        type='password' 
+                        id='confirmPassword' 
+                        placeholder='Enter Confirm Password'
+                        required 
+                        onChange={e => setConfirmPassword(e.target.value)}></input>
+                </div>
+                
+                <div>
+                    <label />
+                    <button className='primary' type='submit'>Register</button>
                 </div>
                 <div>
                     <label>
                         <div>
-                            New customer? <Link to={`/register?redirect=${redirect}`}>Create your account</Link>
+                            Already have an account <Link to={`/signin?redirect=${redirect}`}>Sign in</Link>
                         </div>
                     </label>
                 </div>

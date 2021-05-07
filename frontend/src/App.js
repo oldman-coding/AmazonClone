@@ -6,6 +6,7 @@ import { signout } from './actions/userAction';
 import CartScreen from './screens/CartScreen';
 import HomeScreen from './screens/HomeScreen';
 import ProductScreen from './screens/ProductScreen';
+import RegisterScreen from './screens/RegisterScreen';
 import SigninScreen from './screens/SigninScreen';
 
 function App() {
@@ -54,6 +55,7 @@ function App() {
             <main>
                 <Route path='/cart/:id?' component = {CartScreen} />
                 <Route path='/signin' component = {SigninScreen} />
+                <Route path='/register' component = {RegisterScreen} />
                 <Route path ='/product/:productId' component= {ProductScreen} />
                 <Route exact path ='/' component = {HomeScreen} />
 

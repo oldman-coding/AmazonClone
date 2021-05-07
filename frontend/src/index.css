@@ -197,8 +197,14 @@ img.small {
 }
 
 /* Alert */
+
+
 .success {
   color: #20a020;
+}
+
+.loading {
+  display: block !important;
 }
 
 .error {
@@ -260,3 +266,4 @@ img.small {
 .dropdown:hover .dropdown-content{
   display: block;
 }
+
