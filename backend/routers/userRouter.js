@@ -38,7 +38,6 @@ userRouter.post('/signin',
         return; 
       }
     }
-    else 
       res.status(401).send({message: "Invalid email or password"});
   }))
 

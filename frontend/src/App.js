@@ -5,8 +5,10 @@ import { BrowserRouter, Link, Route } from 'react-router-dom';
 import { signout } from './actions/userAction';
 import CartScreen from './screens/CartScreen';
 import HomeScreen from './screens/HomeScreen';
+import PaymentMethodScreen from './screens/PaymentMethodScreen';
 import ProductScreen from './screens/ProductScreen';
 import RegisterScreen from './screens/RegisterScreen';
+import ShippingAdressScreen from './screens/ShippingAdressScreen';
 import SigninScreen from './screens/SigninScreen';
 
 function App() {
@@ -56,6 +58,8 @@ function App() {
                 <Route path='/cart/:id?' component = {CartScreen} />
                 <Route path='/signin' component = {SigninScreen} />
                 <Route path='/register' component = {RegisterScreen} />
+                <Route path='/shipping' component = {ShippingAdressScreen} />
+                <Route path='/payment' component = {PaymentMethodScreen} />
                 <Route path ='/product/:productId' component= {ProductScreen} />
                 <Route exact path ='/' component = {HomeScreen} />
 

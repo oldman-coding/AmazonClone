@@ -29,11 +29,11 @@ export default function RegisterScreen(props) {
         }
         
     };
-    // useEffect(() => {
-    //     if (userInfo) {
-    //         props.history.push(redirect)
-    //     }
-    // }, [props.history, redirect, userInfo]);
+    useEffect(() => {
+        if (userInfo) {
+            props.history.push(redirect)
+        }
+    }, [props.history, redirect, userInfo]);
 
     return (
         <div>
