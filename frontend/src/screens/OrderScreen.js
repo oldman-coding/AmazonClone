@@ -1,40 +1,29 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom';
-import { createOrder } from '../actions/orderAction';
-import CheckoutSteps from '../components/CheckoutSteps'
-import { ORDER_CREATE_RESET } from '../constants/orderConstants';
+import { detailsOrder } from '../actions/orderAction';
 import LoadingBox from '../components/LoadingBox'; 
 import MessageBox from '../components/MessageBox';
 
-export default function PlaceOrderScreen(props) {
-    const cart = useSelector(state => state.cart); 
-    const { shippingAddress, paymentMethod, cartItems } = cart;
-    if (!paymentMethod) {
-        props.history.push('/payment')
-    }; 
-    const orderCreate = useSelector(state => state.orderCreate); 
-    const { loading, success, error, order } = orderCreate;
-    const toPrice = num => Number(num.toFixed(2))
-    cart.itemsPrice = toPrice(
-        cart.cartItems.reduce((a, c) => a + c.qty * c.price, 0)
-    )
-    cart.shippingPrice = cart.itemsPrice >100 ? toPrice(0) : toPrice(10);
-    cart.taxPrice = toPrice(0.15 * cart.itemsPrice); 
-    cart.totalPrice = cart.itemsPrice + cart.taxPrice + cart.shippingPrice;
+export default function OrderScreen(props) {
+    const orderId = props.match.params.id;
+    const orderDetails = useSelector(state => state.orderDetails);
+    const { order, loading, error } = orderDetails;
+    console.log('Order is:' + order);
+    // const { shippingAddress, paymentMethod, itemsPrice, 
+    //     shippingPrice, taxPrice, totalPrice, orderItems } = order;
     const dispatch = useDispatch();
-    const placeOrderHandler = () => {
-        dispatch(createOrder({...cart, orderItems: cart.cartItems}))
-    }
+
     useEffect(() => {
-        if (success) {
-            props.history.push(`/order/${order._id}`); 
-            dispatch({type: ORDER_CREATE_RESET}); 
-        }
-    }, [dispatch, order, props.history, success]);
-    return (
+        dispatch(detailsOrder(orderId))
+    }, [dispatch, orderId]);
+    return loading
+        ? (<LoadingBox />)
+        : error ?(<MessageBox variant='danger'>{error}</MessageBox>)
+        : 
+    (
         <div>
-            <CheckoutSteps step1 step2 step3 step4></CheckoutSteps>
+            <h1>Order {order._id}</h1>
             <div className='row top'>
                 <div className='col-2'>
                     <ul>
@@ -42,19 +31,25 @@ export default function PlaceOrderScreen(props) {
                             <div className='card card-body'>
                                 <h2>Shipping</h2>
                                 <p>
-                                    <strong>Name:</strong> {shippingAddress.fullName} <br />
-                                    <strong>Address:</strong> {shippingAddress.address}, 
-                                    {shippingAddress.city}, {shippingAddress.postalCode}, 
-                                    {shippingAddress.country}
+                                    <strong>Name:</strong> {order.shippingAddress.fullName} <br />
+                                    <strong>Address:</strong> {order.shippingAddress.address}, 
+                                    {order.shippingAddress.city}, {order.shippingAddress.postalCode}, 
+                                    {order.shippingAddress.country}
                                 </p>
+                                {order.isDelivered 
+                                ? (<MessageBox variant='success'>Delivered at {order.deliveredAt} </MessageBox>)
+                                : (<MessageBox variant = 'danger'>Not Delivered</MessageBox>)}
                             </div>
                         </li>
                         <li>
                             <div className='card card-body'>
                                 <h2>Payment</h2>
                                 <p>
-                                    <strong>Method:</strong> {paymentMethod}
+                                    <strong>Method:</strong> {order.paymentMethod}
                                 </p>
+                                {order.isPaid
+                                ? (<MessageBox variant='success'>Paid at {order.paidAt} </MessageBox>)
+                                : (<MessageBox variant = 'danger'>Not Paid</MessageBox>)}
                             </div>
                         </li>
                         <li>
@@ -62,7 +57,7 @@ export default function PlaceOrderScreen(props) {
                                 <h2>Order Items</h2>
                                 <ul>
                                     {
-                                        cartItems.map(item => (
+                                        order.orderItems.map(item => (
                                             <li key={item.product}>
                                                 <div className = 'row'>
                                                     <div>
@@ -93,38 +88,28 @@ export default function PlaceOrderScreen(props) {
                             <li>
                                 <div className='row'>
                                     <div>Items</div>
-                                    <div>${cart.itemsPrice}</div>
+                                    <div>${order.itemsPrice}</div>
                                 </div>
                             </li>
                             <li>
                                 <div className='row'>
                                     <div>Shipping</div>
-                                    <div>${cart.shippingPrice}</div>
+                                    <div>${order.shippingPrice}</div>
                                 </div>
                             </li>
                             <li>
                                 <div className='row'>
                                     <div>Tax</div>
-                                    <div>${cart.taxPrice}</div>
+                                    <div>${order.taxPrice}</div>
                                 </div>
                             </li>
                             <li>
                                 <div className='row'>
                                     <div><strong>Order Total</strong></div>
-                                    <div><strong>${cart.totalPrice}</strong></div>
+                                    <div><strong>${order.totalPrice}</strong></div>
                                 </div>
                             </li>
-                            <li>
-                                <button 
-                                    type='button'
-                                    onClick={placeOrderHandler}
-                                    className='primary block'
-                                    disabled = {cartItems.length ===0}>
-                                    Place Order
-                                </button>
-                            </li>
-                            {loading && <LoadingBox></LoadingBox>}
-                            {error && <MessageBox>{error}</MessageBox>}
+                            
                         </ul>
                             
                     </div>
