@@ -15,7 +15,7 @@ export default function PlaceOrderScreen(props) {
     }; 
     const orderCreate = useSelector(state => state.orderCreate); 
     const { loading, success, error, order } = orderCreate;
-    const toPrice = num => Number(num.toFixed(2))
+    const toPrice = num => Number(num.toFixed(2)); 
     cart.itemsPrice = toPrice(
         cart.cartItems.reduce((a, c) => a + c.qty * c.price, 0)
     )
