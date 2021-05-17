@@ -12,9 +12,10 @@ export default function ProductEditSreen(props) {
     const [price, setPrice] = useState(''); 
     const [image, setImage] = useState(''); 
     const [category, setCategory] = useState(''); 
-    const [countInStock, setCountInStock] = useState(0); 
+    const [countInStock, setCountInStock] = useState(''); 
     const [brand, setBrand] = useState(''); 
     const [description, setDescription] = useState(''); 
+
     const dispatch = useDispatch(); 
     const productDetails = useSelector(state => state.productDetails); 
     const { loading, error, product } = productDetails;
@@ -24,7 +25,7 @@ export default function ProductEditSreen(props) {
 
     useEffect(() => {
         if (successUpdate) {
-            // props.history.push('/productlist'); 
+            props.history.push('/productlist'); 
         }
         if (!product || product._id !== productId || successUpdate) {
             dispatch({type: PRODUCT_EDIT_RESET}); 
