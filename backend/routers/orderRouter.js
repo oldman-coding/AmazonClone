@@ -1,9 +1,15 @@
 import express from 'express'; 
 import expressAsyncHandler from 'express-async-handler';
 import Order from '../models/orderModel.js';
-import { isAuth } from '../ultils.js';
+import { isAuth, isAdmin } from '../ultils.js';
 
 const orderRouter = express.Router(); 
+
+orderRouter.get('/', isAuth, isAdmin, expressAsyncHandler(async(req, res) => {
+    const orders = await Order.find({}).populate('user', 'name'); 
+    res.send(orders); 
+}))
+
 orderRouter.get('/mine', isAuth, 
     expressAsyncHandler(async(req, res) => {
         const orders = await Order.find({user: req.user._id}); 
@@ -60,8 +66,32 @@ orderRouter.put('/:id/pay', isAuth,
         }
         
     } )
-)
-    
+); 
 
+orderRouter.delete('/:id', isAuth, isAdmin, 
+expressAsyncHandler(async(req, res) => {
+  const order = await Order.findById(req.params.id); 
+  if (order) {
+    const deletedOrder = await order.remove(); 
+    res.send({message: 'Order Deleted', order: deletedOrder})
+  } else {
+    res.status(404).send({message: 'Order not Found'});
+  }
+})); 
+    
+orderRouter.put('/:id/deliver', isAuth, isAdmin,  
+    expressAsyncHandler(async(req, res) => {
+        const order = await Order.findById(req.params.id); 
+        if (order) {
+            order.isDelivered = true;
+            order.deliveredAt = Date.now(); 
+            const updatedOrder = await order.save();
+            res.send({message: 'Order Delivered', order: updatedOrder}); 
+        } else {
+            res.status(404).send({message: 'Order Not Found'})
+        }
+        
+    } )
+); 
 
 export default orderRouter; 

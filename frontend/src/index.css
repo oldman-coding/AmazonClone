@@ -289,7 +289,7 @@ img.small {
 }
 
 .table {
-  width: 100;
+  width: 100%;
   border-collapse: collapse;
 
 }
@@ -307,3 +307,5 @@ img.small {
 .table button {
   margin: 0.1rem;
 }
+
+

@@ -62,9 +62,10 @@ export const editProduct = (product) => async (dispatch, getState) => {
         type: PRODUCT_EDIT_REQUEST, 
         payload: product
     }); 
+    console.log(product);
     const {userSignin:{userInfo}} = getState();
     try {
-        const {data} = await axios.put(`/api/products/${product._id}`, product, {
+        const {data} = await axios.put(`/api/products/${product.productId}`, product, {
             headers: { Authorization: `Bearer ${userInfo.token}` }
         }); 
         dispatch({

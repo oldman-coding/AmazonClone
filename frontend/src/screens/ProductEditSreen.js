@@ -44,7 +44,7 @@ export default function ProductEditSreen(props) {
 
     const submitHandler = (e) => {
         e.preventdefault(); 
-        dispatch(editProduct({_id: productId, name, price, image, 
+        dispatch(editProduct({productId, name, price, image, 
             category, countInStock, brand, description })); 
     }
     const [loadingUpload, setLoadingUpload] = useState(false); 
@@ -78,9 +78,9 @@ export default function ProductEditSreen(props) {
                 </div>
                 {loadingUpdate && <LoadingBox />}
                 {errorUpdate && <MessageBox>{errorUpdate}</MessageBox>}
-                {loading? <LoadingBox />
-                : error ? <MessageBox>{error}</MessageBox> 
-                : 
+                {loading? (<LoadingBox />)
+                : error ? (<MessageBox variant='danger'>{error}</MessageBox> )
+                : (
                 <>
                     <div>
                         <label htmlFor='name'>Name</label>
@@ -167,6 +167,8 @@ export default function ProductEditSreen(props) {
                         <button className='primary' type='submit'>Update</button>
                     </div>
                 </>    
+                ) 
+                
 
                 }
             </form>
