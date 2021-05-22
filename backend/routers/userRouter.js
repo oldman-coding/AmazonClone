@@ -3,7 +3,7 @@ import expressAsyncHandler from 'express-async-handler';
 import data from '../data.js';
 import User from '../models/userModel.js';
 import bcrypt from 'bcryptjs';
-import { generateToken, isAuth } from '../ultils.js';
+import { generateToken, isAdmin, isAuth } from '../ultils.js';
 
 const userRouter = express.Router();
 
@@ -16,9 +16,8 @@ userRouter.get(
   })
 );
 
-userRouter.get('/', 
+userRouter.get('/', isAuth, isAdmin, 
   expressAsyncHandler(async (req, res) => {
-    // await User.remove({});
     const users = await User.find({});
     res.send({ users });
 }))
@@ -88,6 +87,23 @@ userRouter.post('/signin',
     
     
   })
-  )
+  ); 
+
+  userRouter.delete('/:id', isAuth, isAdmin, 
+  expressAsyncHandler(async(req, res) => {
+    const user = await User.findById(req.params.id); 
+    if (user) {
+      if (user.isAdmin) {
+        res.status(400).send({message: 'You can not delete User admin'});
+      } else {
+        user.remove();
+        res.send({message: 'Successful delete user', user: user})
+      }
+    } else {
+      res.status(404).send({message: "User not found"})
+    }
+    
+  })
+  ); 
 
 export default userRouter;
