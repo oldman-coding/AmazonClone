@@ -6,7 +6,9 @@ import { isAuth, isAdmin } from '../ultils.js';
 const orderRouter = express.Router(); 
 
 orderRouter.get('/', isAuth, isAdmin, expressAsyncHandler(async(req, res) => {
-    const orders = await Order.find({}).populate('user', 'name'); 
+    const seller = req.query.seller || ''; 
+    const sellerFilter = seller? {seller}: {}; 
+    const orders = await Order.find({...sellerFilter}).populate('user', 'name'); 
     res.send(orders); 
 }))
 
@@ -24,6 +26,7 @@ orderRouter.post('/',
     }
     else {
         const order = new Order({
+            seller: req.body.orderItems[0].seller,
             orderItems: req.body.orderItems, 
             shippingAddress: req.body.shippingAddress, 
             paymentMethod: req.body.paymentMethod, 
@@ -82,6 +85,8 @@ expressAsyncHandler(async(req, res) => {
 orderRouter.put('/:id/deliver', isAuth, isAdmin,  
     expressAsyncHandler(async(req, res) => {
         const order = await Order.findById(req.params.id); 
+        const seller = req.query.seller || ''; 
+        const sellerFilter = seller? {seller}: {}; 
         if (order) {
             order.isDelivered = true;
             order.deliveredAt = Date.now(); 

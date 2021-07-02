@@ -2,6 +2,7 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import AdminRoute from './components/AdminRoute';
+import SellerRoute from './components/SellerRoute'; 
 import { BrowserRouter, Link, Route } from 'react-router-dom'; 
 import { signout } from './actions/userAction';
 import PrivateRoute from './components/PrivateRoute';
@@ -20,6 +21,7 @@ import SigninScreen from './screens/SigninScreen';
 import ProductEditSreen from './screens/ProductEditSreen';
 import OrderListScreen from './screens/OrderListScreen';
 import UserListScreen from './screens/UserListScreen';
+import UserEditScreen from './screens/UserEditScreen';
 
 function App() {
     const cart = useSelector(state => state.cart);
@@ -71,6 +73,23 @@ function App() {
                         ) 
                         : (<Link to='/signin'>Sign In</Link>)
                     }
+                    {userInfo && userInfo.isSeller
+                    && (
+                        <div className='dropdown'>
+                            <Link to='#seller'>
+                                Seller <i className='fa fa-caret-down'></i>
+                            </Link>
+                            <ul className='dropdown-content'>
+                                <li>
+                                    <Link to='/productlist/seller'>Products</Link>
+                                </li>
+                                <li>
+                                    <Link to='orderlist/seller'>Orders</Link>
+                                </li>
+                            </ul>
+                        </div>  
+                    )
+                    }
                     {userInfo && userInfo.isAdmin && (
                         <div className='dropdown'>
                             <Link to='#admin'>
@@ -84,10 +103,10 @@ function App() {
                                     <Link to='/productlist'>Products</Link>
                                 </li>
                                 <li>
-                                    <Link to='orderlist'>Orders</Link>
+                                    <Link to='/orderlist'>Orders</Link>
                                 </li>
                                 <li>
-                                    <Link to='userlist'>Users</Link>
+                                    <Link to='/userlist'>Users</Link>
                                 </li>
 
                             </ul>
@@ -108,9 +127,12 @@ function App() {
                 <Route path = '/order/:id' component = {OrderScreen} />
                 <Route path= '/orderhistory' component = {OrderHistoryScreen} />
                 <PrivateRoute path ='/profile' component = {ProfileScreen } />
-                <AdminRoute path ='/productlist' component = {ProductListScreen} />
-                <AdminRoute path = '/orderlist' component = {OrderListScreen} />
+                <AdminRoute exact path ='/productlist' component = {ProductListScreen} />
+                <AdminRoute exact path = '/orderlist' component = {OrderListScreen} />
+                <SellerRoute path ='orderlist/seller' component = {OrderListScreen} />
+                <SellerRoute path ='/productlist/seller' component = {ProductListScreen} />
                 <AdminRoute path = '/userlist' component = {UserListScreen} />
+                <AdminRoute path ='/user/:id/edit' component={ UserEditScreen } />
                 <Route exact path ='/' component = {HomeScreen} />
             </main>
             <footer className="row center">
