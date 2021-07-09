@@ -61,6 +61,7 @@ userRouter.post('/signin',
       _id: createdUser._id,
       name: createdUser.name, 
       email: createdUser.email, 
+      isSeller: user.isSeller,
       isAdmin: createdUser.isAdmin,
       token: generateToken(createdUser)
     });
@@ -87,6 +88,7 @@ userRouter.post('/signin',
         name: updatedUser.name, 
         email: updatedUser.email, 
         isAdmin: updatedUser.isAdmin,
+        isSeller: user.isSeller,
         token: generateToken(updatedUser)
       });
     }

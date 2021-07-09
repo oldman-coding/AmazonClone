@@ -1,11 +1,11 @@
 import express from 'express'; 
 import expressAsyncHandler from 'express-async-handler';
 import Order from '../models/orderModel.js';
-import { isAuth, isAdmin } from '../ultils.js';
+import { isAuth, isAdmin, isSellerOrAdmin } from '../ultils.js';
 
 const orderRouter = express.Router(); 
 
-orderRouter.get('/', isAuth, isAdmin, expressAsyncHandler(async(req, res) => {
+orderRouter.get('/', isAuth, isSellerOrAdmin, expressAsyncHandler(async(req, res) => {
     const seller = req.query.seller || ''; 
     const sellerFilter = seller? {seller}: {}; 
     const orders = await Order.find({...sellerFilter}).populate('user', 'name'); 

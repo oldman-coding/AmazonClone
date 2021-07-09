@@ -45,7 +45,8 @@ export default function ProfileScreen() {
             setName(user.name);
             setEmail(user.email);
         }
-    }, [dispatch, user, userInfo._id])
+        console.log(user);
+    }, [dispatch, user, userInfo])
     return (
         <div>
             <form className='form' onSubmit={submitHandler}>
