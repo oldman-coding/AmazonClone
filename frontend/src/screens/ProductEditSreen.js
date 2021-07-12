@@ -43,7 +43,7 @@ export default function ProductEditSreen(props) {
     }, [dispatch, product, productId, props.history, successUpdate]); 
 
     const submitHandler = (e) => {
-        e.preventdefault(); 
+        e.preventDefault(); 
         dispatch(editProduct({productId, name, price, image, 
             category, countInStock, brand, description })); 
     }

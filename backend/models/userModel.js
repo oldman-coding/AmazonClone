@@ -11,7 +11,7 @@ const userSchema = new mongoose.Schema({
         logo: String, 
         description: String, 
         rating: {type: Number, default: 0, required: true}, 
-        numReviews: {type: Number, defult: 0, required: true}
+        numReviews: {type: Number, default: 0, required: true}
     }
 }, {
     timestamps: true
